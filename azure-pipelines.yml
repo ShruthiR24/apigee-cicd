@@ -8,9 +8,16 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+  
+variables:
+
+  API_VERSION: "googleapi"
 
 steps:
 - task: Maven@3
+  displayName: mvnApigeeConfigurationGoogle
+  enabled: "true"
+  condition:  eq(variables.API_VERSION, 'googleapi')
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
@@ -19,4 +26,5 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+    goals: "install -P$(API_VERSION) -Dapigee.config.options=update"
+    #goals: "install -P$(API_VERSION) -Dapigee.org=$(APIGEE_ORG) -Denv=$(APIGEE_ENV) -Dsa=sa.json -Dapigee.config.file=./EdgeConfig/edge.json -Dapigee.config.options=update"
