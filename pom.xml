@@ -51,6 +51,8 @@
 		<apigee.org>clear-coyote-344705</apigee.org>
 		<apigee.env>hybrid-example-env</apigee.env>
 		<deployment.description>n/a</deployment.description>
+		<apigee.plugin.version>2.1.0</apigee.plugin.version>
+		
 	</properties>
 
 	<profiles>
