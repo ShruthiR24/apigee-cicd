@@ -1,0 +1,17 @@
+<APIProxy revision="1" name="HelloWorldIDE">
+    <DisplayName>HelloWorld-IDE</DisplayName>
+    <Description>Hello world application from IDE</Description>
+    <CreatedAt>1651058214101</CreatedAt>
+    <LastModifiedAt>1651058214101</LastModifiedAt>
+    <BasePaths>/v1/world/greetings</BasePaths>
+    <Policies>
+        <Policy>ResponseCache</Policy>
+        <Policy>VerifyAPIKey</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <TargetEndpoints>
+        <TargetEndpoint>default</TargetEndpoint>
+    </TargetEndpoints>
+</APIProxy>

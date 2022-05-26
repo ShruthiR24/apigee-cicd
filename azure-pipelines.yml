@@ -63,6 +63,16 @@ steps:
   enabled: "true"
   displayName: runApigeeLint
   
+# Generate GCP Service Account file from Azure Pipeline variable GCP_SERVICE_ACCOUNT
+# if deploy to Apigee X/hybrid
+- bash: |
+    echo '$(GCP_SERVICE_ACCOUNT)' > sa.json
+  enabled: "true"
+  condition:  eq(variables.API_VERSION, 'googleapi')
+  displayName: Generate SA Key file 
+  env:  
+    GCP_SERVICE_ACCOUNT: $(GCP_SERVICE_ACCOUNT)
+  
 # Publish static code analysis folder results
 - task: PublishBuildArtifacts@1
   displayName: publishStaticCodeTestsResults
@@ -86,3 +96,15 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: "install -P$(API_VERSION) -Dapigee.config.options=update"
     #goals: "install -P$(API_VERSION) -Dapigee.org=$(APIGEE_ORG) -Denv=$(APIGEE_ENV) -Dsa=sa.json -Dapigee.config.file=./EdgeConfig/edge.json -Dapigee.config.options=update"
+
+# run Apickli, API test integration
+- bash: |
+    echo "run Apickli"
+    mkdir integration_output
+    export NODE_TLS_REJECT_UNAUTHORIZED="0"
+    sed -i "s/organization_hostname/$TEST_HOST/g" ./test/integration/features/support/init.js
+    node ./node_modules/cucumber/bin/cucumber-js ./test/integration --format json:report.json
+    node ./test/integration/index.js
+    cp ./cucumber_report.html integration_output/apickli_report.html 
+  displayName: runApickli
+  enabled: "true"
